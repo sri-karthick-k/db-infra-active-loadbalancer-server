@@ -11,7 +11,7 @@ const port = 4000;
 
 app.get('/api/isActive', (req, res) => {
   const virtualIp = process.env.VIRTUAL_IP;
-  const command = `ifconfig | grep ${virtualIp}`;
+  const command = `hostname -I | grep ${virtualIp}`;
   const command2 = "whoami";
 
   // Object to hold the results of both commands
