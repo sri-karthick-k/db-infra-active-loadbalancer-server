@@ -1,7 +1,6 @@
 const express = require('express');
 const { exec } = require('child_process');
 const cors = require("cors");
-require("dotenv").config()
 
 const app = express();
 app.use(cors())
@@ -9,9 +8,11 @@ app.use(express.json())
 
 const port = 4000;
 
-app.get('/api/isActive', (req, res) => {
-  const virtualIp = process.env.VIRTUAL_IP;
-  const command = `hostname -I | grep ${virtualIp}`;
+const virtualIp = "192.168.64.13";
+
+app.get('/api/isActive/:ip', (req, res) => {
+  const {ip} = req.params;
+  const command = `ssh -q -o StrictKeyHostKeyChecking=no ubuntu@${ip} "hostname -I | grep ${virtualIp}"`;
   const command2 = "hostname";
 
   // Object to hold the results of both commands
@@ -20,6 +21,7 @@ app.get('/api/isActive', (req, res) => {
   exec(command, (error, stdout, stderr) => {
     if (!error) {
       const isActive = stdout.trim().length > 0;
+      console.log(stdout)
       results.isActive = isActive.toString();
     } else {
       console.error(error)
@@ -29,10 +31,10 @@ app.get('/api/isActive', (req, res) => {
     // Execute the second command
     exec(command2, (error2, stdout2, stderr2) => {
       if (!error2) {
-        results.username = stdout2.trim();
+        results.hostname = stdout2.trim();
       } else {
         console.error('Error executing command:', error2);
-        results.username = 'Unknown';
+        results.hostname = 'Unknown';
       }
       res.json(results);
     });
