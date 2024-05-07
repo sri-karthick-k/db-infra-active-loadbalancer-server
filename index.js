@@ -22,7 +22,6 @@ app.get('/api/isActive', (req, res) => {
       const isActive = stdout.trim().length > 0;
       results.isActive = isActive.toString();
     } else {
-      console.error('Error executing command:', error);
       results.isActive = false;
     }
 
@@ -34,8 +33,6 @@ app.get('/api/isActive', (req, res) => {
         console.error('Error executing command:', error2);
         results.username = 'Unknown';
       }
-
-      // Send the results object as JSON
       res.json(results);
     });
   });
