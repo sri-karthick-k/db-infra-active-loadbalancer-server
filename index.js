@@ -22,6 +22,7 @@ app.get('/api/isActive', (req, res) => {
       const isActive = stdout.trim().length > 0;
       results.isActive = isActive.toString();
     } else {
+      console.error(error)
       results.isActive = false;
     }
 
