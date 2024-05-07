@@ -13,7 +13,7 @@ const virtualIp = "192.168.64.13";
 app.get('/api/isActive/:ip', (req, res) => {
   const {ip} = req.params;
   const command = `ssh -q -o StrictHostKeyChecking=no ubuntu@${ip} "hostname -I | grep ${virtualIp}"`;
-  const command2 = 'ssh -q -o StrictHostKeyChecking=no "hostname"';
+  const command2 = `ssh -q -o StrictHostKeyChecking=no ubuntu@${ip} "hostname"`;
 
   // Object to hold the results of both commands
   const results = {};
